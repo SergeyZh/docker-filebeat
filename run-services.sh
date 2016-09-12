@@ -5,8 +5,11 @@ modify_filebeat()
     echo "Filebeat Param: $1"
     NAME=`echo $1 | cut -d '=' -f 1`
     VALUE=`echo $1 | cut -d '=' -f 2`
-    sed -i "s|${NAME}|${VALUE}|" /filebeat.yml
+    sed -i "s|${NAME}|${VALUE}|" /filebeat-mod.yml
 }
+
+# To prevent impossibbility of change of host mapped file
+cp /filebeat.yml /filebeat-mod.yml
 
 ARRAY_FILEBEAT=`set | grep -E ^FILEBEAT_`
 if [ ! -z "${ARRAY_FILEBEAT}" ] ; then
@@ -24,7 +27,7 @@ shutdown_filebeat()
 
 trap shutdown_filebeat SIGINT SIGTERM SIGHUP
 
-/bin/filebeat -c /filebeat.yml > /var/log/filebeat.log
+/bin/filebeat -c /filebeat-mod.yml > /var/log/filebeat.log
 
 tail -f /var/log/filebeat.log &
 
