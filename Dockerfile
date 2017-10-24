@@ -2,11 +2,11 @@ FROM zot24/glibc
 
 MAINTAINER Sergey Zhukov, sergey@jetbrains.com
 
-ENV FILEBEAT_VERSION=1.3.0 \
-    FILEBEAT_SHA1=6f6d5363bd343f026bdf4aa2a87c86dbbbe76e29
+ENV FILEBEAT_VERSION=5.6.3 \
+    FILEBEAT_SHA512=84023f4552f2b75dece829c5c3c307b9ec49107fc22939f9b6b931aeb0de0d03a898a36733d192531db7178e548576014319ed9b7b35418f347100d7c083b637
 
-RUN wget http://download.elastic.co/beats/filebeat/filebeat-${FILEBEAT_VERSION}-x86_64.tar.gz -O /filebeat.tar.gz && \
-    echo "${FILEBEAT_SHA1}  filebeat.tar.gz" | sha1sum -c - && \
+RUN apk --no-cache add openssl && wget http://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz -O /filebeat.tar.gz && \
+    echo "${FILEBEAT_SHA512}  filebeat.tar.gz" | sha512sum -c - && \
     tar xzvf /filebeat.tar.gz && \
     cd filebeat-* && \
     mv filebeat /bin && \
